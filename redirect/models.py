@@ -63,14 +63,8 @@ class Redirect(models.Model):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
     def save(self, *args, **kwargs):
-        # strip slashes from beggining, add slashes to the end
+        # strip slashes from beggining
         self.from_url = self.from_url.lstrip('/')
-
-        try:
-            if self.from_url[-1] != '/':
-                self.from_url += '/'
-        except IndexError:
-            pass
 
         if self.from_url == '':
             # user wants to catch '/'
