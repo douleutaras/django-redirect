@@ -1,6 +1,11 @@
+# coding=utf-8
+from __future__ import unicode_literals
+
 from django.db import models
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
+
 
 HTTP_STATUS_CHOICES = (
     (301, _('301 - Permanent Redirect')),
@@ -25,6 +30,7 @@ to_url_helptext = _('Absolute path or full domain. Example: '
                     )
 
 
+@python_2_unicode_compatible
 class Redirect(models.Model):
     site = models.ForeignKey(Site)
 
@@ -53,19 +59,18 @@ class Redirect(models.Model):
         unique_together = (('site', 'from_url'),)
         ordering = ('-uses_regex',)
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Redirect: %(from)s --> %(to)s") % {'from': self.from_url, 'to': self.to_url}
 
     def save(self, *args, **kwargs):
         # strip slashes from beggining, add slashes to the end
-        # only if not a regex
-        if not self.uses_regex:
-            self.from_url = self.from_url.lstrip('/')
-            try:
-                if self.from_url[-1] != '/':
-                    self.from_url += '/'
-            except IndexError:
-                pass
+        self.from_url = self.from_url.lstrip('/')
+
+        try:
+            if self.from_url[-1] != '/':
+                self.from_url += '/'
+        except IndexError:
+            pass
 
         if self.from_url == '':
             # user wants to catch '/'

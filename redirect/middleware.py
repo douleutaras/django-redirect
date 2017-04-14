@@ -3,7 +3,7 @@ from django.core.urlresolvers import resolve
 
 class RedirectMiddleware(object):
     """
-        Process the redirect patterns from redirects.dynamic_urls.
+        Process the redirect patterns from redirects.urls.
     """
     def process_response(self, request, response):
         if response.status_code != 404:
@@ -13,7 +13,7 @@ class RedirectMiddleware(object):
         path = request.get_full_path()
 
         try:
-            urlconf = 'redirect.dynamic_urls'
+            urlconf = 'redirect.urls'
             redirect, args, kwargs = resolve(path, urlconf=urlconf)
             return redirect(request, **kwargs)
         except:

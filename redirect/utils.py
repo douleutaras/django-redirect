@@ -1,20 +1,12 @@
-try:
-    from django.conf.urls import url, patterns
-except ImportError:
-    from django.conf.urls.default import url, patterns
+# coding=utf-8
+from __future__ import unicode_literals
 
+from django.conf.urls import url
 from django.conf import settings
+from django.db import connection
+
 from models import Redirect
-
-
-def group_aruments(seq, group=254):
-    """
-        group the list into lists of 254 items each.
-
-        This is due to argument restrictions in python.
-        http://docs.djangoproject.com/en/dev/topics/http/urls/#patterns
-    """
-    return (seq[pos:pos + group] for pos in range(0, len(seq), group))
+from views import redirect_to
 
 
 def get_redirect_patterns():
@@ -23,14 +15,17 @@ def get_redirect_patterns():
         and assigns them to the django patterns object.
     """
     site_id = settings.SITE_ID
-    url_patterns = []
     url_list = []
     db_filters = {
-        'status': 1,
+        'status': True,
         'site': site_id
     }
 
-    redirects = Redirect.objects.filter(**db_filters)
+    if 'redirect_redirect' in connection.introspection.table_names():
+        redirects = Redirect.objects.filter(**db_filters)
+    else:
+        redirects = []
+
     for redirect in redirects:
         extra = {}
         pattern = r'^%s$' % redirect.from_url
@@ -39,12 +34,6 @@ def get_redirect_patterns():
 
         if redirect.http_status == 302:
             extra.update({'permanent': False})
-            url_list.append(url(pattern, 'redirect_to', extra))
-        else:
-            url_list.append(url(pattern, 'redirect_to', extra))
+        url_list.append(url(pattern, redirect_to, extra))
 
-    arg_groups = list(group_aruments(url_list))
-    for args in arg_groups:
-        url_patterns += patterns('redirect.views', *args)
-
-    return url_patterns
+    return url_list
