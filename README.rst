@@ -22,6 +22,11 @@ Installation
       'redirect.middleware.RedirectMiddleware'
   )
 
+5. Run migration
+
+    python manage.py migrate redirect
+
+
 License: MIT
 ------------
 
