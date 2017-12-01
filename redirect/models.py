@@ -71,4 +71,4 @@ class Redirect(models.Model):
             self.from_url = '^$'
             self.uses_regex = True
 
-        super(Redirect, self).save(args, kwargs)
+        super(Redirect, self).save(*args, **kwargs)
