@@ -1,12 +1,13 @@
 # coding=utf-8
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
 import sys
 
 from django.conf import settings
 from django.contrib import admin
-from models import Redirect
-import urls
+from .models import Redirect
+from . import urls
 
 
 class RedirectAdmin(admin.ModelAdmin):
