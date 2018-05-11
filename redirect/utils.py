@@ -1,12 +1,13 @@
 # coding=utf-8
 from __future__ import unicode_literals
+from __future__ import absolute_import
 
 from django.conf.urls import url
 from django.conf import settings
 from django.db import connection
 
-from redirect.models import Redirect
-from redirect.views import redirect_to
+from .models import Redirect
+from .views import redirect_to
 
 
 def get_redirect_patterns():

@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+from builtins import object
 from django.db import models
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
@@ -54,7 +55,7 @@ class Redirect(models.Model):
     update_dt = models.DateTimeField(auto_now=True)
     internal = models.BooleanField(default=False)
 
-    class Meta:
+    class Meta(object):
         verbose_name = _('redirect')
         verbose_name_plural = _('redirects')
         unique_together = (('site', 'from_url'),)

@@ -1,3 +1,4 @@
+from builtins import object
 from django.core.urlresolvers import resolve
 from django.urls.exceptions import Resolver404
 
