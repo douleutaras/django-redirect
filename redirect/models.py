@@ -52,6 +52,7 @@ class Redirect(models.Model):
 
     create_dt = models.DateTimeField(auto_now_add=True)
     update_dt = models.DateTimeField(auto_now=True)
+    internal = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('redirect')
