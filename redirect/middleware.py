@@ -1,5 +1,6 @@
 from builtins import object
 from django.core.urlresolvers import resolve
+from django.urls.exceptions import Resolver404
 
 
 class RedirectMiddleware(object):
@@ -15,7 +16,12 @@ class RedirectMiddleware(object):
 
         try:
             urlconf = 'redirect.urls'
-            redirect, args, kwargs = resolve(path, urlconf=urlconf)
+            while True:
+                try:
+                    redirect, args, kwargs = resolve(path, urlconf=urlconf)
+                except Resolver404:
+                    break
+                path = kwargs.get('url')
             return redirect(request, **kwargs)
         except:
             # No redirect was found. Return the response.
