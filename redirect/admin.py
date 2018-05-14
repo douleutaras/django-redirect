@@ -9,7 +9,6 @@ from six.moves import reload_module
 from django.conf import settings
 from django.contrib import admin
 from .models import Redirect
-from . import urls
 
 
 class RedirectAdmin(admin.ModelAdmin):
@@ -17,6 +16,8 @@ class RedirectAdmin(admin.ModelAdmin):
     list_filter = ['internal']
 
     def save_model(self, request, object, form, change):
+        from . import urls
+        
         instance = form.save()
         # for sites that are not in debug mode reload
         # the dynamic urls, i'm not sure if this is the
