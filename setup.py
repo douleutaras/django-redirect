@@ -13,7 +13,7 @@ A slightly more robust version of the native django redirect
 import os
 from distutils.core import setup
 
-__version__ = "0.4"
+__version__ = "0.4.1"
 
 
 def fullsplit(path, result=None):
