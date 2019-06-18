@@ -7,6 +7,8 @@ from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
+from .validators import validate_regex
+
 
 HTTP_STATUS_CHOICES = (
     (301, _('301 - Permanent Redirect')),
@@ -36,7 +38,8 @@ class Redirect(models.Model):
     site = models.ForeignKey(Site)
 
     from_url = models.CharField(_('From URL'), max_length=255, unique=True,
-                                db_index=True, help_text=from_url_helptext)
+                                db_index=True, help_text=from_url_helptext,
+                                validators=[validate_regex])
 
     to_url = models.CharField(_('To URL'), max_length=255,
                               db_index=True, help_text=to_url_helptext)
