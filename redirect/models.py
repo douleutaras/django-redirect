@@ -35,7 +35,7 @@ to_url_helptext = _('Absolute path or full domain. Example: '
 
 @python_2_unicode_compatible
 class Redirect(models.Model):
-    site = models.ForeignKey(Site)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
 
     from_url = models.CharField(_('From URL'), max_length=255, unique=True,
                                 db_index=True, help_text=from_url_helptext,
