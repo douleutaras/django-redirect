@@ -1,9 +1,13 @@
 from builtins import object
-from django.core.urlresolvers import resolve
+try:
+    from django.core.urlresolvers import resolve
+except ModuleNotFoundError:
+    from django.urls import resolve
 from django.urls.exceptions import Resolver404
+from django.utils.deprecation import MiddlewareMixin
 
 
-class RedirectMiddleware(object):
+class RedirectMiddleware(MiddlewareMixin):
     """
         Process the redirect patterns from redirects.urls.
     """
