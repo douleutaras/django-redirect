@@ -1,4 +1,3 @@
-from builtins import object
 try:
     from django.core.urlresolvers import resolve
 except ModuleNotFoundError:
